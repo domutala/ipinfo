@@ -31,7 +31,7 @@ for i in $(seq 1 $NUM_CONTAINERS); do
     STAR_AT=$((i * 10000))
 
     # Lancer le conteneur avec --rm et passer la variable d'environnement MY_VAR
-    CONTAINER_ID=$(docker run -d --memory="500m" --rm -e START_AT=$STAR_AT -e FILE=f$ile $IMAGE)
+    CONTAINER_ID=$(docker run -d --memory="500m" --rm -e START_AT=$STAR_AT -e FILE=$file $IMAGE)
 
     # docker run -d --memory="500m" --cpus="1" myimage
     # docker run -d --memory="80m" --cpus="0.25" myimage
@@ -45,6 +45,6 @@ done
 
 # Exécution du prune pour nettoyer les ressources Docker inutilisées
 echo "Nettoyage des ressources Docker inutilisées..."
-docker system prune -f --volumes
+# docker system prune -f --volumes
 
 echo "Tous les conteneurs ont été exécutés et supprimés."
