@@ -34,7 +34,7 @@ for i in $(seq 1 $NUM_CONTAINERS); do
 
     #Lancer le conteneur avec --rm
     CONTAINER_ID=$(
-        docker run -d \
+        docker run -d --rm \
             --name $i-$NUM_CONTAINERS-$UNIQ \
             --memory="500m" \
             -e START_AT=$STAR_AT -e FILE=$file \
