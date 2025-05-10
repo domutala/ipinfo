@@ -4,4 +4,4 @@ split -n 10 .data/routeviews.txt .data/.routeviews/part_
 
 docker build -f src/enrichAsn/docker/Dockerfile -t ipinfo-enrich-ans .
 
-ls .data/.routeviews/part_* | xargs -n 1 -P 10 bash ./run.sh
+ls .data/.routeviews/part_* | xargs -n 1 -P 10 bash ./launch.sh
