@@ -100,10 +100,25 @@ export default async function enrichAsn() {
       console.log(`[ ⏱ ] ${ip} → duration: ${duration}ms`);
     }
 
+    async function $fetch(url: string, options: RequestInit = {}) {
+      const timeout = 10000;
+
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+      clearTimeout(id);
+
+      return response;
+    }
+
     async function whoisRdap(ip: string) {
       try {
         const url = new URL(`https://rdap.org/ip/${ip}`);
-        const response = await fetch(url.toString(), {
+        const response = await $fetch(url.toString(), {
           method: "GET",
           headers: { "User-Agent": "whois-ts-bot/1.0" },
         });
@@ -122,7 +137,7 @@ export default async function enrichAsn() {
     async function ansRdap(asn: number) {
       try {
         const url = new URL(`https://rdap.org/autnum/${asn}`);
-        const response = await fetch(url.toString(), {
+        const response = await $fetch(url.toString(), {
           method: "GET",
           headers: { "User-Agent": "whois-ts-bot/1.0" },
         });
