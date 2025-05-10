@@ -1,3 +1,5 @@
+mkdir -p .data/.ans_ip_prefix
+
 rm -f .logs/.routeviews
 mkdir -p .data/.routeviews
 split -n 10 .data/routeviews.txt .data/.routeviews/part_

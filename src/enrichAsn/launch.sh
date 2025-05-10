@@ -30,8 +30,17 @@ for i in $(seq 1 $NUM_CONTAINERS); do
 
     STAR_AT=$((i * 10000))
 
-    # Lancer le conteneur avec --rm et passer la variable d'environnement MY_VAR
-    CONTAINER_ID=$(docker run -d --memory="500m" --rm -e START_AT=$STAR_AT -e FILE=$file $IMAGE)
+    UNIQ=$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 12)
+
+    #Lancer le conteneur avec --rm
+    CONTAINER_ID=$(
+        docker run -d \
+            --name $i-$NUM_CONTAINERS-$UNIQ \
+            --memory="500m" \
+            -e START_AT=$STAR_AT -e FILE=$file \
+            -v ./.data/.ans_ip_prefix:/temp/enrinch-ans \
+            $IMAGE
+    )
 
     # docker run -d --memory="500m" --cpus="1" myimage
     # docker run -d --memory="80m" --cpus="0.25" myimage

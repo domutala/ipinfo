@@ -1,25 +1,14 @@
 import { URL } from "url";
 import pLimit from "p-limit";
 import { join } from "path";
-import { existsSync, readFileSync, writeFileSync } from "fs";
-import { parseArgs } from "util";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { v4 } from "uuid";
 
 export default async function enrichAsn() {
-  // const { values: args } = parseArgs({
-  //   args: Bun.argv,
-  //   options: {
-  //     startAt: { type: "string" },
-  //   },
-  //   strict: true,
-  //   allowPositionals: true,
-  // });
-
-  // if (!args.startAt) throw "--startAt arg is missing";
+  mkdirSync("/temp/enrinch-ans", { recursive: true });
+  const target_file = `/temp/enrinch-ans/${v4()}.json`;
 
   const startAt = parseInt(process.env.START_AT);
-
-  writeFileSync(join(process.cwd(), ".data/ans_ip_prefix.json"), "[]");
-
   const BATCH_SIZE = 1000;
 
   // Exemple : 84 requêtes en parallèle
@@ -43,15 +32,13 @@ export default async function enrichAsn() {
   let counter = 0;
 
   function maybeFlushBatch(force = false) {
-    const filename = join(process.cwd(), ".data/ans_ip_prefix.json");
-
-    if (!existsSync(filename)) writeFileSync(filename, "[]");
+    if (!existsSync(target_file)) writeFileSync(target_file, "[]");
 
     if (results.length >= BATCH_SIZE || force) {
-      const e = JSON.parse(readFileSync(filename, "utf8")) as any[];
+      const e = JSON.parse(readFileSync(target_file, "utf8")) as any[];
 
       e.push(...results);
-      writeFileSync(filename, JSON.stringify(e));
+      writeFileSync(target_file, JSON.stringify(e));
 
       results = [];
     }
