@@ -13,4 +13,4 @@ COPY . .
 RUN bun install
 
 # Démarrer Nuxt
-CMD ["bun", "run", "src/enrichAsn/enrich.ts"]
+CMD ["bun", "run", "src/enrichAsn/index.ts"]

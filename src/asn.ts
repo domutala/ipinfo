@@ -2,7 +2,6 @@ import type { AsnEntry, AsnRecord, PrefixEntry } from "./interfaces";
 import { readFileSync, writeFileSync } from "fs";
 import { ipInPrefix } from "./ip";
 import { join } from "path";
-import enrichAsn from "./enrichAsn";
 import { loadCities } from "./geonames";
 import currencies from "./currencies.json";
 
@@ -137,8 +136,6 @@ export async function fetchAsn() {
   await fetchAndParse();
 
   parseAsnFile();
-
-  await enrichAsn();
 }
 
 export function lookupAsn(asn: number) {
